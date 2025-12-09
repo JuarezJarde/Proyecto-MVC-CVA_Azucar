@@ -1,0 +1,2 @@
+# Esto bloquea cualquier petición HTTP a esta carpeta
+Require all denied

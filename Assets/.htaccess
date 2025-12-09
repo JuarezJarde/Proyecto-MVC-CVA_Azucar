@@ -1,0 +1,2 @@
+# Esto permite acceder a los archivos, pero prohíbe ver la lista
+Options -Indexes
