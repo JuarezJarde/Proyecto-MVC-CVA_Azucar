@@ -45,6 +45,7 @@
                         <li><a href="#" onclick="mostrarPanel('usuarios')"><i class="fas fa-users"></i> Usuarios y Solicitudes</a></li>
                         <li><a href="#" onclick="mostrarPanel('servicios')"><i class="fas fa-box-open"></i> Servicios</a></li>
                         <li><a href="#" onclick="mostrarPanel('inventario')"><i class="fas fa-clipboard-list"></i> Inventario</a></li>
+                        <li><a href="#" onclick="mostrarPanel('codigos')"><i class="fas fa-barcode"></i> Codigos y Formatos</a></li>
                     <?php } ?>
 
                     <!--SECCIÓN AVANZADA (Exclusiva para SuperUsuario) -->
@@ -371,6 +372,163 @@
                 </section>
 
                 <!--Codigos Profesora de ing-->
+
+                <section id="panel-codigos" class="panel" style="display: none;">
+                    <h1>Gestión de Códigos</h1>
+                        
+                        <section style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                            
+                            <section style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px dashed #666;">
+                                <h3 style="color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                                    <i class="fas fa-barcode"></i> Generar Nuevo Código
+                                </h3>
+                                <form action="../controladores/codigos_controlador.php" method="POST">
+                                    <label>Formato:</label>
+                                    <input type="text" name="nombre_formato" placeholder="Ej: Solicitud de Vacaciones" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+
+                                    <label>Departamento:</label>
+                                    <select name="modulo" required style="width: 100%; padding: 8px; margin-bottom: 10px;">
+                                        <?php foreach ($lista_deptos as $dept) { ?>
+                                            <option value="<?php echo $dept['nombre_departamento']; ?>">
+                                                <?php echo $dept['nombre_departamento']; ?> (<?php echo $dept['prefijo']; ?>)
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                    <button type="submit" class="btn-guardar" style="width: 100%;">Generar</button>
+                                </form>
+                            </section>
+                                    
+                           <!-- <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #ccc;">-->
+
+                            <section style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px dashed #666;">
+                                <h3 style="color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+                                    <i class="fas fa-building"></i> Agregar Departamento
+                                </h3>
+                                <form action="../controladores/departamentos_controlador.php" method="POST">
+                                    <label>Nombre:</label>
+                                    <input type="text" name="nombre" placeholder="Ej: Seguridad" required style="width: 100%; padding: 5px;">
+                                    
+                                    <section style="display: flex; gap: 10px; margin-top: 10px;">
+                                        <section>
+                                            <label>Prefijo (3 letras):</label>
+                                            <input type="text" name="prefijo" placeholder="SEG" maxlength="5" required style="width: 100%; padding: 5px; text-transform: uppercase;">
+                                        </section>
+                                        <section>
+                                            <label>Sufijo:</label>
+                                            <input type="text" name="sufijo" value="X" maxlength="5" required style="width: 100%; padding: 5px; text-transform: uppercase;">
+                                        </section>
+                                    </section>
+                                    <button type="submit" class="btn-guardar" style="width: 100%; margin-top: 15px; background: #555;">Guardar Configuración</button>
+                                </form>
+                            </section>
+                        </section>
+
+                        <hr style="margin: 2rem 0; border: 0; border-top: 1px solid #ccc;">
+
+                        <section style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <h3><i class="fa-solid fa-sort"></i> Filtros y Reportes</h3>
+                            
+                            <form method="GET" action="panel.php" style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                                <input type="hidden" name="tab" value="codigos"> <section>
+                                    <label>Mes:</label>
+                                    <select name="filtro_mes" style="padding: 8px;">
+                                        <option value="">Todos</option>
+                                        <option value="1">Enero</option> <option value="2">Febrero</option>
+                                        <option value="3">Marzo</option> <option value="4">Abril</option>
+                                        <option value="5">Mayo</option> <option value="6">Junio</option>
+                                        <option value="7">Julio</option> <option value="8">Agosto</option>
+                                        <option value="9">Septiembre</option> <option value="10">Octubre</option>
+                                        <option value="11">Noviembre</option> <option value="12">Diciembre</option>
+                                    </select>
+                                </section>
+                                
+                                <section>
+                                    <label>Departamento:</label>
+                                    <select name="filtro_dept" style="padding: 8px;">
+                                        <option value="">Todos</option>
+                                        <?php foreach ($lista_deptos as $dept) { ?>
+                                            <option value="<?php echo $dept['nombre_departamento']; ?>">
+                                                <?php echo $dept['nombre_departamento']; ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </section>
+
+                                <button type="submit" class="btn-guardar">🔍 Buscar</button>
+                                
+                                <button type="button" onclick="descargarExcel()" class="btn-guardar" style="background: #217346;">
+                                    <i class="fas fa-file-excel"></i> Excel
+                                </button>
+                                <button type="button" onclick="imprimirTabla()" class="btn-rechazar" style="background: #b30b00;">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                            </form>
+                        </section>
+
+                        <section id="areaImpresion">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr style="background: #333; color: white;">
+                                        <th>Código</th>
+                                        <th>Formato</th>
+                                        <th>Departamento</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($lista_codigos)) { 
+                                        foreach ($lista_codigos as $c) { ?>
+                                        <tr>
+                                            <td style="font-weight: bold; font-family: monospace; color: #0056b3;"><?php echo $c['codigo_completo']; ?></td>
+                                            <td><?php echo $c['nombre_formato']; ?></td>
+                                            <td><?php echo $c['modulo_sistema']; ?></td>
+                                            <td><?php echo date('d/m/Y', strtotime($c['fecha_creacion'])); ?></td>
+                                        </tr>
+                                    <?php } } else { echo "<tr><td colspan='4'>No hay resultados con estos filtros.</td></tr>"; } ?>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <script>
+                            function descargarExcel() {
+                                // Obtener valores de los filtros actuales
+                                const mes = document.querySelector('select[name="filtro_mes"]').value;
+                                const dept = document.querySelector('select[name="filtro_dept"]').value;
+                                // Redirigir al script de descarga
+                                window.location.href = `../controladores/reporte_codigos.php?mes=${mes}&departamento=${dept}`;
+                            }
+
+                           function imprimirTabla() {
+                                //copia el contenido de la tabla
+                                const contenido = document.getElementById('areaImpresion').innerHTML;
+                                
+                                //Abre una ventana nueva
+                                const ventana = window.open('', '', 'height=600,width=800');
+                                
+                                ventana.document.write('<html><head>');
+                                ventana.document.write('<meta charset="UTF-8">');
+                                ventana.document.write('<title>Reporte de Códigos_</title>');
+                                
+                                //Estilos
+                                ventana.document.write('<style>');
+                                ventana.document.write('body { font-family: Arial, sans-serif; }');
+                                ventana.document.write('table { width: 100%; border-collapse: collapse; }');
+                                ventana.document.write('th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }');
+                                ventana.document.write('th { background-color: #333; color: white; }');
+                                ventana.document.write('h1 { text-align: center; color: #66AC4C; }');
+                                ventana.document.write('</style>');
+                                
+                                ventana.document.write('</head><body>');
+                                ventana.document.write('<h1>Reporte de Inventario de Códigos</h1>');
+                                ventana.document.write(contenido);
+                                ventana.document.write('</body></html>');
+                                
+                                ventana.document.close();
+                                ventana.print();
+                                //No puedo hacer Código se vea bien :c
+                            }
+                        </script>
+                </section>
             <?php } ?>
 
             <!-- =======================================================
@@ -702,9 +860,23 @@
                 $icono = "warning";
                 break;
                 //caso de configuracion
-                case 'config_guardada':
+            case 'config_guardada':
                 $titulo = "Configuración Actualizada";
                 $texto = "Los cambios se aplicaron a la página de inicio.";
+                break;
+                //caso de codigos/departamentos
+            case 'codigo_creado':
+                $titulo = "Código Generado";
+                $texto = "El nuevo código ha sido creado correctamente.";
+                break;
+            case 'depto_ok':
+                $titulo = "Departamento Agregado";
+                $texto = "La nueva sección ha sido añadida al sistema.";
+                break;
+            case 'error_duplicado':
+                $titulo = "Departamento Duplicado";
+                $texto = "Ya existe un departamento con ese nombre o prefijo.";
+                $icono = "error";
                 break;
         }
     ?>

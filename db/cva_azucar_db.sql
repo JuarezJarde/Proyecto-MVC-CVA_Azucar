@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-12-2025 a las 03:16:37
+-- Tiempo de generación: 09-12-2025 a las 22:41:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -64,7 +64,11 @@ INSERT INTO `auditoria` (`id_log`, `fecha_hora`, `usuario`, `accion`, `detalles`
 (22, '2025-12-07 02:13:19', 'admin', 'Logout', 'Cierre de sesión correcto.'),
 (23, '2025-12-07 02:13:24', 'usuario', 'Login Exitoso', 'Inicio de sesión desde IP: ::1'),
 (24, '2025-12-07 02:14:11', 'usuario', 'Logout', 'Cierre de sesión correcto.'),
-(25, '2025-12-07 02:14:19', 'Super Administrador', 'Login Exitoso', 'Inicio de sesión desde IP: ::1');
+(25, '2025-12-07 02:14:19', 'Super Administrador', 'Login Exitoso', 'Inicio de sesión desde IP: ::1'),
+(26, '2025-12-07 02:31:27', 'Super Administrador', 'Logout', 'Cierre de sesión correcto.'),
+(27, '2025-12-09 03:37:05', 'Super Administrador', 'Login Exitoso', 'Inicio de sesión desde IP: ::1'),
+(28, '2025-12-09 17:27:22', 'Super Administrador', 'Logout', 'Cierre de sesión correcto.'),
+(29, '2025-12-09 17:28:13', 'Super Administrador', 'Login Exitoso', 'Inicio de sesión desde IP: ::1');
 
 -- --------------------------------------------------------
 
@@ -258,7 +262,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `auditoria`
 --
 ALTER TABLE `auditoria`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `configuracion_web`
@@ -270,7 +274,7 @@ ALTER TABLE `configuracion_web`
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -282,7 +286,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `servicios`
 --
 ALTER TABLE `servicios`
-  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudes_registro`

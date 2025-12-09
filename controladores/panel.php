@@ -5,6 +5,8 @@ require_once '../modelos/ModeloServicios.php';
 require_once '../modelos/ModeloInventario.php';
 require_once '../modelos/ModeloConfiguracion.php';
 require_once '../modelos/ModeloAuditoria.php';
+require_once '../modelos/ModeloCodigos.php';
+require_once '../modelos/ModeloDepartamentos.php';
 
 //SEGURIDAD
 if (!isset($_SESSION['id_usuario'])) {
@@ -51,6 +53,15 @@ if ($id_rol == 1 || $id_rol == 2) {
 
     $modeloInventario = new ModeloInventario();
     $lista_inventario = $modeloInventario->obtenerInventario();
+
+    $modeloDept = new ModeloDepartamentos();
+    $lista_deptos = $modeloDept->obtenerDepartamentos();
+
+    $filtroMes = $_GET['filtro_mes'] ?? '';
+    $filtroDept = $_GET['filtro_dept'] ?? '';
+
+    $modCodigos = new ModeloCodigos();
+    $lista_codigos = $modCodigos->obtenerCodigosFiltrados($filtroMes, $filtroDept);
 }
 
 if ($id_rol == 1) {

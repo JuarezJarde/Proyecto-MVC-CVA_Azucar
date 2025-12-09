@@ -43,9 +43,9 @@ $lista = $modelo->obtenerUsuariosConRoles(0);
 
 foreach ($lista as $u) {
     $pdf->Cell(10, 10, $u['id_usuario'], 1);
-    $pdf->Cell(60, 10, mb_convert_encoding($u['nombre_completo'], 'ISO-8859-1', 'UTF-8'), 1);
+    $pdf->Cell(60, 10, mb_convert_encoding($u['nombre_completo'], 'UTF-16LE', 'UTF-8'), 1);
     $pdf->Cell(60, 10, $u['correo'], 1);
-    $pdf->Cell(30, 10, mb_convert_encoding($u['nombre_rol'], 'ISO-8859-1', 'UTF-8'), 1);
+    $pdf->Cell(30, 10, mb_convert_encoding($u['nombre_rol'], 'UTF-16LE', 'UTF-8'), 1);
     
     // Fecha (si no existe, ponemos hoy)
     $fecha = isset($u['fecha_registro']) ? date('d/m/Y', strtotime($u['fecha_registro'])) : date('d/m/Y');
