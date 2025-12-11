@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2025 a las 22:41:14
+-- Tiempo de generación: 11-12-2025 a las 02:45:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -97,6 +97,31 @@ INSERT INTO `configuracion_web` (`id_configuracion`, `color_principal`, `color_t
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `config_departamentos`
+--
+
+CREATE TABLE `config_departamentos` (
+  `id_departamento` int(11) NOT NULL,
+  `nombre_departamento` varchar(100) NOT NULL,
+  `prefijo` varchar(5) NOT NULL,
+  `sufijo` varchar(5) NOT NULL DEFAULT 'X',
+  `estatus` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `config_departamentos`
+--
+
+INSERT INTO `config_departamentos` (`id_departamento`, `nombre_departamento`, `prefijo`, `sufijo`, `estatus`) VALUES
+(1, 'Contabilidad', 'CNT', 'X', 1),
+(2, 'Recursos Humanos', 'RRHH', 'X', 1),
+(3, 'Tecnología', 'TI', 'X', 1),
+(4, 'Tesorería', 'TES', 'X', 1),
+(5, 'Informática', 'INF', 'X', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `inventario`
 --
 
@@ -108,6 +133,31 @@ CREATE TABLE `inventario` (
   `unidad_medida` varchar(20) DEFAULT NULL,
   `fecha_actualizacion` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_codigos`
+--
+
+CREATE TABLE `inventario_codigos` (
+  `id_codigo` int(11) NOT NULL,
+  `codigo_completo` varchar(20) NOT NULL,
+  `prefijo` varchar(5) NOT NULL,
+  `numero_secuencia` int(11) NOT NULL,
+  `sufijo` varchar(5) DEFAULT NULL,
+  `nombre_formato` varchar(100) NOT NULL,
+  `modulo_sistema` varchar(50) NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_codigos`
+--
+
+INSERT INTO `inventario_codigos` (`id_codigo`, `codigo_completo`, `prefijo`, `numero_secuencia`, `sufijo`, `nombre_formato`, `modulo_sistema`, `fecha_creacion`) VALUES
+(1, 'CNT0001-X', 'CNT', 1, 'X', 'Solicitud de Vacaciones', 'Contabilidad', '2025-12-09 21:39:07'),
+(2, 'TES0001-X', 'TES', 1, 'X', 'Solicitud de Vacaciones', 'Tesorería', '2025-12-09 21:39:14');
 
 -- --------------------------------------------------------
 
@@ -219,11 +269,28 @@ ALTER TABLE `configuracion_web`
   ADD PRIMARY KEY (`id_configuracion`);
 
 --
+-- Indices de la tabla `config_departamentos`
+--
+ALTER TABLE `config_departamentos`
+  ADD PRIMARY KEY (`id_departamento`),
+  ADD UNIQUE KEY `nombre_departamento` (`nombre_departamento`),
+  ADD UNIQUE KEY `nombre_departamento_2` (`nombre_departamento`),
+  ADD UNIQUE KEY `nombre_departamento_3` (`nombre_departamento`),
+  ADD UNIQUE KEY `prefijo` (`prefijo`);
+
+--
 -- Indices de la tabla `inventario`
 --
 ALTER TABLE `inventario`
   ADD PRIMARY KEY (`id_producto`),
   ADD UNIQUE KEY `codigo_producto` (`codigo_producto`);
+
+--
+-- Indices de la tabla `inventario_codigos`
+--
+ALTER TABLE `inventario_codigos`
+  ADD PRIMARY KEY (`id_codigo`),
+  ADD UNIQUE KEY `codigo_completo` (`codigo_completo`);
 
 --
 -- Indices de la tabla `roles`
@@ -271,10 +338,22 @@ ALTER TABLE `configuracion_web`
   MODIFY `id_configuracion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT de la tabla `config_departamentos`
+--
+ALTER TABLE `config_departamentos`
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `inventario_codigos`
+--
+ALTER TABLE `inventario_codigos`
+  MODIFY `id_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
